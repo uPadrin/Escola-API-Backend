@@ -1,0 +1,17 @@
+# =====================================================
+# .dockerignore
+# Evita copiar arquivos desnecessários para o contexto
+# do Docker, acelerando o build.
+# =====================================================
+
+target/
+.git/
+.gitignore
+*.md
+.env
+.env.*
+!.env.example
+node_modules/
+school-frontend/
+*.zip
+*.tar.gz

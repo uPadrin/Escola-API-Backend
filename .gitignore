@@ -1,0 +1,59 @@
+### JetBrains (IntelliJ IDEA) ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/resources/archetype-resources/__parentId__-core.iml
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.classpath
+.project
+.factorypath
+
+### Visual Studio Code ###
+.vscode/
+
+### Build Tools (Maven) ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.nextSnapshot
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Build Tools (Gradle) ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Logs ###
+*.log
+logs/
+
+### OS (macOS, Windows) ###
+.DS_Store
+Thumbs.db
+
+### Configurações de Ambiente (Segurança) ###
+.env
+.env.local
+.env.*.local
+
+### Ficheiros de aplicação específicos ###
+# Ignorar as credenciais locais ou ficheiros de configuração com segredos
+src/main/resources/application-local.properties
+src/main/resources/application-local.yml

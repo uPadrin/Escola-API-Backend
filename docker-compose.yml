@@ -1,0 +1,69 @@
+# =====================================================
+# docker-compose.yml
+# Sobe o sistema completo localmente:
+#   - db:      PostgreSQL 16
+#   - backend: Spring Boot (porta 8080)
+#
+# Como usar:
+#   1. Copie .env.example para .env e preencha os valores
+#   2. docker compose up --build
+#   3. Acesse http://localhost:8080/swagger-ui.html
+# =====================================================
+
+version: '3.9'
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: escola_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB:-escola_db}
+      POSTGRES_USER:     ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # Persiste os dados entre restarts do container
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      # Expõe para acesso local com DBeaver, pgAdmin, etc.
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-escola_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Spring Boot Backend ─────────────────────────────
+  backend:
+    build:
+      context: .          # raiz do projeto (onde está o pom.xml)
+      dockerfile: Dockerfile
+    container_name: escola_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy   # só sobe após o Postgres estar pronto
+    environment:
+      # Variáveis consumidas pelo application-prod.properties
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL:      jdbc:postgresql://db:5432/${POSTGRES_DB:-escola_db}
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET:  ${JWT_SECRET}
+      # Duração dos tokens (opcional — usa os defaults dos .properties)
+      JWT_EXPIRATION:     ${JWT_EXPIRATION:-900000}
+      REFRESH_EXPIRATION: ${REFRESH_EXPIRATION:-604800000}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api-docs > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ── Volumes persistentes ─────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
