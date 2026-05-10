@@ -18,11 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// =====================================================
-// DisciplinaService.java
-// Versão com paginação.
-// Mantém métodos sem paginação para selects do frontend.
-// =====================================================
 
 @Service
 @RequiredArgsConstructor
@@ -31,37 +26,26 @@ public class DisciplinaService {
     private final DisciplinaRepository disciplinaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    /**
-     * Lista todas as disciplinas com paginação.
-     */
+
     public PageResponse<DisciplinaResponse> listar(Pageable pageable) {
         return PageResponse.de(
             disciplinaRepository.findAll(pageable).map(this::toResponse)
         );
     }
 
-    /**
-     * Lista disciplinas ativas com paginação.
-     */
+
     public PageResponse<DisciplinaResponse> listarAtivas(Pageable pageable) {
         return PageResponse.de(
             disciplinaRepository.findByAtiva(true, pageable).map(this::toResponse)
         );
     }
 
-    /**
-     * Lista disciplinas por professor com paginação.
-     */
     public PageResponse<DisciplinaResponse> listarPorProfessor(Long professorId, Pageable pageable) {
         return PageResponse.de(
             disciplinaRepository.findByProfessorId(professorId, pageable).map(this::toResponse)
         );
     }
 
-    /**
-     * Lista todas as disciplinas SEM paginação.
-     * Usado no select de vínculo de professor no frontend.
-     */
     public List<DisciplinaResponse> listarTodasSemPaginacao() {
         return disciplinaRepository.findAll()
                 .stream()
@@ -135,7 +119,7 @@ public class DisciplinaService {
         disciplinaRepository.deleteById(id);
     }
 
-    // ── Helpers ───────────────────────────────────────────
+
 
     private Usuario buscarProfessor(Long professorId) {
         Usuario professor = usuarioRepository.findById(professorId)

@@ -15,14 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-// =====================================================
-// AuthController.java — atualizado
-//
-// Novos endpoints:
-//   POST /api/auth/refresh  — renova o access token
-//   POST /api/auth/logout   — invalida a sessão
-// =====================================================
-
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

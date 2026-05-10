@@ -36,7 +36,6 @@ public class DataInitializer {
                         if (usuarioRepository.count() == 0) {
                                 log.info("=== Inicializando dados de exemplo ===");
 
-                                // Criar Diretor
                                 Usuario diretor = usuarioRepository.save(Usuario.builder()
                                                 .nome("Carlos Diretor")
                                                 .email("diretor@escola.com")
@@ -45,7 +44,6 @@ public class DataInitializer {
                                                 .ativo(true)
                                                 .build());
 
-                                // Criar Secretária
                                 Usuario secretaria = usuarioRepository.save(Usuario.builder()
                                                 .nome("Ana Secretária")
                                                 .email("secretaria@escola.com")
@@ -53,7 +51,7 @@ public class DataInitializer {
                                                 .role(Role.SECRETARIO)
                                                 .ativo(true)
                                                 .build());
-                                // Criar Professores
+
                                 Usuario profMath = usuarioRepository.save(Usuario.builder()
                                                 .nome("Prof. João Matemática")
                                                 .email("prof.matematica@escola.com")
@@ -70,7 +68,6 @@ public class DataInitializer {
                                                 .ativo(true)
                                                 .build());
 
-                                // Criar Alunos
                                 Aluno aluno1 = alunoRepository.save(Aluno.builder()
                                                 .nome("Pedro Alves")
                                                 .matricula("2024000001")
@@ -99,7 +96,6 @@ public class DataInitializer {
                                                 .ativo(true)
                                                 .build());
 
-                                // Criar Disciplinas
                                 Disciplina matematica = disciplinaRepository.save(Disciplina.builder()
                                                 .nome("Matemática")
                                                 .codigo("MAT001")
@@ -126,7 +122,6 @@ public class DataInitializer {
                                                 .ativa(true)
                                                 .build());
 
-                                // Lançar Notas (1º Semestre 2025)
                                 notaRepository.save(Nota.builder()
                                                 .aluno(aluno1).disciplina(matematica).professor(profMath)
                                                 .notaBimestre1(8.5).notaBimestre2(7.0)

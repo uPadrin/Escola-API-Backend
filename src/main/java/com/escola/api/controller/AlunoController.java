@@ -16,19 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-// =====================================================
-// AlunoController.java
-// Versão com paginação no endpoint de listagem.
-//
-// Query params disponíveis em GET /api/alunos:
-//   ?page=0          número da página (começa em 0)
-//   &size=10         itens por página (máx 100)
-//   &sort=nome       campo de ordenação
-//   &direction=asc   direção: asc ou desc
-//   &nome=joão       filtro parcial por nome
-//   &apenasAtivos=true  filtra só matrículas ativas
-// =====================================================
-
 @RestController
 @RequestMapping("/api/alunos")
 @RequiredArgsConstructor

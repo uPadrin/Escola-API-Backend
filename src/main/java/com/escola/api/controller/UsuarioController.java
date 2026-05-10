@@ -18,15 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// =====================================================
-// UsuarioController.java
-// Versão com paginação no endpoint de listagem.
-//
-// GET /api/usuarios?page=0&size=10&sort=nome&direction=asc
-// GET /api/usuarios/role/PROFESSOR?page=0&size=10
-// GET /api/usuarios/professores  ← sem paginação (para selects)
-// =====================================================
-
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor

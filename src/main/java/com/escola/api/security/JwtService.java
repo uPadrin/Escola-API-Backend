@@ -13,13 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-// =====================================================
-// JwtService.java
-// Gera e valida access tokens JWT.
-//
-// Access token: duração curta (15 min em prod, 24h em dev)
-// Refresh token: gerenciado pelo RefreshTokenService (banco)
-// =====================================================
 
 @Service
 public class JwtService {
@@ -27,9 +20,7 @@ public class JwtService {
     @Value("${app.jwt.secret}")
     private String secretKey;
 
-    // app.jwt.expiration = duração do ACCESS token em ms
-    // Dev:  86400000  (24 horas)
-    // Prod: 900000    (15 minutos) — muito mais seguro
+
     @Value("${app.jwt.expiration}")
     private long jwtExpiration;
 

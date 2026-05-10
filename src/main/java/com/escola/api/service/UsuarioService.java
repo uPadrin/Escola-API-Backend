@@ -17,11 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// =====================================================
-// UsuarioService.java
-// Versão com paginação para listagem geral e por role.
-// =====================================================
-
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -29,29 +24,21 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Lista todos os usuários com paginação.
-     */
+
     public PageResponse<UsuarioResponse> listar(Pageable pageable) {
         return PageResponse.de(
             usuarioRepository.findAll(pageable).map(AuthService::toResponse)
         );
     }
 
-    /**
-     * Lista usuários por role com paginação.
-     */
+
     public PageResponse<UsuarioResponse> listarPorRole(Role role, Pageable pageable) {
         return PageResponse.de(
             usuarioRepository.findByRole(role, pageable).map(AuthService::toResponse)
         );
     }
 
-    /**
-     * Lista professores sem paginação — usado em selects/dropdowns.
-     * Retorna lista completa pois a quantidade de professores tende
-     * a ser pequena e o select precisa de todos os itens.
-     */
+
     public List<UsuarioResponse> listarProfessores() {
         return usuarioRepository.findByRole(Role.PROFESSOR,
                 org.springframework.data.domain.Pageable.unpaged())

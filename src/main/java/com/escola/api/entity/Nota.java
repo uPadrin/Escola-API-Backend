@@ -57,7 +57,7 @@ public class Nota {
     private Integer ano;
 
     @Column(name = "situacao", length = 20)
-    private String situacao; // APROVADO, REPROVADO, CURSANDO, RECUPERACAO
+    private String situacao;
 
     @Column(name = "lancado_em", nullable = false, updatable = false)
     private LocalDateTime lancadoEm;
@@ -86,7 +86,6 @@ public class Nota {
                 this.mediaFinal = media;
                 this.situacao = "APROVADO";
             } else if (media >= 5.0 && notaRecuperacao != null) {
-                // Media com recuperação
                 double mediaComRec = (media + notaRecuperacao) / 2.0;
                 this.mediaFinal = mediaComRec;
                 this.situacao = mediaComRec >= 5.0 ? "APROVADO" : "REPROVADO";

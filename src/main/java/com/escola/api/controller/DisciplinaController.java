@@ -17,15 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// =====================================================
-// DisciplinaController.java
-// Versão com paginação.
-//
-// GET /api/disciplinas?page=0&size=10&sort=nome
-// GET /api/disciplinas/ativas?page=0&size=10
-// GET /api/disciplinas/todas  ← sem paginação (para selects)
-// =====================================================
-
 @RestController
 @RequestMapping("/api/disciplinas")
 @RequiredArgsConstructor

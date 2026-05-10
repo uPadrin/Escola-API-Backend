@@ -9,10 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-// =====================================================
-// UsuarioRepository.java
-// Versão com suporte a paginação via Pageable.
-// =====================================================
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -20,11 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
 
-    // ── Paginados ────────────────────────────────────────
-
-    // Lista todos por role com paginação
     Page<Usuario> findByRole(Role role, Pageable pageable);
 
-    // Lista por role e status com paginação
     Page<Usuario> findByRoleAndAtivo(Role role, boolean ativo, Pageable pageable);
 }

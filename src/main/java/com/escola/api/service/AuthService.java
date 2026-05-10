@@ -17,10 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// =====================================================
-// AuthService.java — atualizado com refresh token
-// =====================================================
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -31,12 +27,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
 
-    /**
-     * Login: autentica, gera access token + refresh token.
-     */
+
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        // Autentica via Spring Security (verifica senha BCrypt)
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha())
         );
@@ -44,43 +37,28 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
-        // Gera o access token JWT (duração curta: 15 min em prod)
         String accessToken = jwtService.gerarToken(usuario);
 
-        // Gera o refresh token (duração longa: 7 dias)
         RefreshToken refreshToken = refreshTokenService.criar(usuario);
 
         return buildResponse(usuario, accessToken, refreshToken.getToken());
     }
 
-    /**
-     * Refresh: valida o refresh token e emite novo access token.
-     * O refresh token em si não é renovado (rotação simples).
-     */
     @Transactional
     public AuthResponse refresh(RefreshTokenRequest request) {
-        // Valida o refresh token (lança exceção se expirado/inválido)
         RefreshToken refreshToken = refreshTokenService.validar(request.getRefreshToken());
         Usuario usuario = refreshToken.getUsuario();
 
-        // Emite novo access token
         String novoAccessToken = jwtService.gerarToken(usuario);
 
         return buildResponse(usuario, novoAccessToken, refreshToken.getToken());
     }
 
-    /**
-     * Logout: invalida o refresh token no banco.
-     * O access token expira naturalmente (stateless).
-     */
     @Transactional
     public void logout(RefreshTokenRequest request) {
         refreshTokenService.revogar(request.getRefreshToken());
     }
 
-    /**
-     * Registrar: cria novo usuário no sistema.
-     */
     @Transactional
     public UsuarioResponse registrar(UsuarioRequest request) {
         if (usuarioRepository.existsByEmail(request.getEmail())) {
@@ -98,7 +76,6 @@ public class AuthService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
-    // ─── Helpers ─────────────────────────────────────────
 
     private AuthResponse buildResponse(Usuario u, String accessToken, String refreshToken) {
         return AuthResponse.builder()

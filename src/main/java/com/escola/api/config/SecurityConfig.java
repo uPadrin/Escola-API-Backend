@@ -41,31 +41,26 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Público
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
 
-                        // Alunos: criação/edição apenas DIRETOR e SECRETARIO
                         .requestMatchers(HttpMethod.POST, "/api/alunos/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.PUT, "/api/alunos/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.DELETE, "/api/alunos/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.GET, "/api/alunos/**")
                         .hasAnyRole("DIRETOR", "SECRETARIO", "PROFESSOR")
 
-                        // Usuários (professores, secretários): apenas DIRETOR e SECRETARIO gerenciam
                         .requestMatchers(HttpMethod.POST, "/api/usuarios/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.PUT, "/api/usuarios/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("DIRETOR")
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyRole("DIRETOR", "SECRETARIO")
 
-                        // Disciplinas: DIRETOR e SECRETARIO criam, PROFESSOR pode visualizar
                         .requestMatchers(HttpMethod.POST, "/api/disciplinas/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.PUT, "/api/disciplinas/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.DELETE, "/api/disciplinas/**").hasAnyRole("DIRETOR", "SECRETARIO")
                         .requestMatchers(HttpMethod.GET, "/api/disciplinas/**").authenticated()
 
-                        // Notas: PROFESSOR lança, DIRETOR e SECRETARIO visualizam
                         .requestMatchers(HttpMethod.POST, "/api/notas/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.PUT, "/api/notas/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/notas/**").hasAnyRole("PROFESSOR", "DIRETOR")
@@ -75,7 +70,7 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .headers(headers -> headers.frameOptions(frame -> frame.disable())); // H2 console
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())); 
 
         return http.build();
     }

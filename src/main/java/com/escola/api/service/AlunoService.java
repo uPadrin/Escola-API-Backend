@@ -16,12 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Random;
 
-// =====================================================
-// AlunoService.java
-// Versão com paginação.
-// O método listar() recebe Pageable e retorna PageResponse.
-// =====================================================
-
 @Service
 @RequiredArgsConstructor
 public class AlunoService {
@@ -41,27 +35,21 @@ public class AlunoService {
         boolean temNome = nome != null && !nome.isBlank();
 
         if (temNome && apenasAtivos) {
-            // Busca por nome + só ativos
             page = alunoRepository.findByNomeContainingIgnoreCaseAndAtivo(nome, true, pageable);
 
         } else if (temNome) {
-            // Busca por nome em todos
             page = alunoRepository.findByNomeContainingIgnoreCase(nome, pageable);
 
         } else if (apenasAtivos) {
-            // Só ativos sem filtro de nome
             page = alunoRepository.findByAtivo(true, pageable);
 
         } else {
-            // Todos os alunos — findAll(Pageable) vem do JpaRepository
             page = alunoRepository.findAll(pageable);
         }
 
-        // Converte Page<Aluno> → PageResponse<AlunoResponse>
         return PageResponse.de(page.map(this::toResponse));
     }
 
-    // ── Métodos de item único (sem paginação) ─────────────
 
     public AlunoResponse buscarPorId(Long id) {
         return alunoRepository.findById(id)

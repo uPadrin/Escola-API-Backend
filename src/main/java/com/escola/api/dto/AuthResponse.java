@@ -6,14 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// =====================================================
-// AuthResponse.java — atualizado com refreshToken
-//
-// Retornado em:
-//   POST /api/auth/login
-//   POST /api/auth/refresh
-// =====================================================
-
 @Data
 @Builder
 @NoArgsConstructor

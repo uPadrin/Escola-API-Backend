@@ -17,12 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-// =====================================================
-// NotaController.java
-// Versão com paginação nas listagens.
-// Boletim não é paginado — retorna o relatório completo.
-// =====================================================
-
 @RestController
 @RequestMapping("/api/notas")
 @RequiredArgsConstructor

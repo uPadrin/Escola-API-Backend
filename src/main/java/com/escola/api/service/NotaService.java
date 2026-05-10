@@ -26,13 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// =====================================================
-// NotaService.java
-// Versão com paginação nas listagens.
-// Boletim continua sem paginação (retorna todas as notas
-// do aluno no ano para gerar o relatório completo).
-// =====================================================
-
 @Service
 @RequiredArgsConstructor
 public class NotaService {
@@ -42,27 +35,21 @@ public class NotaService {
     private final DisciplinaRepository disciplinaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    /**
-     * Lista notas de um aluno com paginação.
-     */
+
     public PageResponse<NotaResponse> listarPorAluno(Long alunoId, Pageable pageable) {
         return PageResponse.de(
             notaRepository.findByAlunoId(alunoId, pageable).map(this::toResponse)
         );
     }
 
-    /**
-     * Lista notas de um aluno em um ano com paginação.
-     */
+
     public PageResponse<NotaResponse> listarPorAlunoEAno(Long alunoId, Integer ano, Pageable pageable) {
         return PageResponse.de(
             notaRepository.findByAlunoIdAndAno(alunoId, ano, pageable).map(this::toResponse)
         );
     }
 
-    /**
-     * Lista notas de uma disciplina por semestre/ano com paginação.
-     */
+
     public PageResponse<NotaResponse> listarPorDisciplina(
             Long disciplinaId, Semestre semestre, Integer ano, Pageable pageable) {
         return PageResponse.de(
@@ -78,15 +65,10 @@ public class NotaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Nota não encontrada com id: " + id));
     }
 
-    /**
-     * Boletim: SEM paginação — retorna todas as notas do aluno
-     * no ano para montar o relatório completo de uma vez.
-     */
     public BoletimResponse gerarBoletim(Long alunoId, Integer ano) {
         Aluno aluno = alunoRepository.findById(alunoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado com id: " + alunoId));
 
-        // Usa a versão sem Pageable para pegar tudo
         List<NotaResponse> notas = notaRepository
                 .findByAlunoIdAndAno(alunoId, ano)
                 .stream()
@@ -173,8 +155,6 @@ public class NotaService {
         }
         notaRepository.deleteById(id);
     }
-
-    // ── Helpers ───────────────────────────────────────────
 
     private Usuario getProfessorAutenticado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
